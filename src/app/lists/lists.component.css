@@ -1,0 +1,13 @@
+section.lists {
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+}
+
+app-todo-list {
+  flex: 0 0 1;
+  display: inline-block;
+  border: solid black 1px;
+  margin: 1em;
+  padding: 0.25em;
+}

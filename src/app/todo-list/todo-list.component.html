@@ -1,0 +1,14 @@
+<section class="root">
+  <h3>{{list.name}} <button (click)="delete()">Delete list</button></h3>
+  <form (ngSubmit)="createItem(newItemLabel.value); newItemLabel.value=''">
+    <label>Create a new item:</label>
+    <input type="text" #newItemLabel/>
+  </form>
+  <section class="items">
+    <app-todo-item *ngFor="let item of list.items"
+                   [clock]="item.clock"
+                   [item]="item"
+                   [listId]="list.id">
+    </app-todo-item>
+  </section>
+</section>

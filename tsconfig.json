@@ -8,6 +8,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
+    "baseUrl": ".", // This must be specified if "paths" is.
+    "paths": {
+      "@data/*": ["./src/app/data/*"] // This mapping is relative to "baseUrl"
+    },
     "typeRoots": [
       "node_modules/@types"
     ],
