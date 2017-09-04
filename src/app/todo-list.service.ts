@@ -5,7 +5,7 @@ import {
   ItemID, ListID,
   MESSAGE_FOR_SERVER, SERVER_UPDATE_ITEM_CHECK, SERVER_UPDATE_ITEM_LABEL,
   MESSAGE_FOR_CLIENT, TODOLISTS_NEW_STATE,
-  TodoListJSON, ItemJSON, TodoListWithItems, SERVER_DELETE_ITEM, SERVER_DELETE_LIST,
+  TodoListJSON, ItemJSON, TodoListWithItems, SERVER_DELETE_ITEM, SERVER_DELETE_LIST, SERVER_UPDATE_LIST_DATA,
 } from "../data/protocol";
 export {
   ItemID, ListID,
@@ -44,7 +44,7 @@ export class TodoListService {
       reconnectionDelayMax : 5000,
       reconnectionAttempts: Infinity
     });
-    this.sio.connect()
+    this.sio.connect();
     this.sio.on("connect", () => {
       console.log("Connection with socket.io server established");
       if (this.user) {
@@ -95,7 +95,8 @@ export class TodoListService {
       name: name,
       items: [],
       id: id,
-      clock: -1
+      clock: -1,
+      data: {}
     });
     this.emit( {
       type: "SERVER_CREATE_NEW_LIST",
@@ -111,6 +112,24 @@ export class TodoListService {
     };
     this.emit(op);
     this.ListUIs = this.ListUIs.filter( L => L.id !== ListID );
+  }
+
+  SERVER_UPDATE_LIST_DATA(ListID: ListID, data: Object) {
+    const op: SERVER_UPDATE_LIST_DATA = {
+      type: "SERVER_UPDATE_LIST_DATA",
+      ListID: ListID,
+      data: data
+    };
+    this.emit(op);
+    this.ListUIs = this.ListUIs.map( L => {
+      if (L.id === ListID) {
+        const newL = Object.assign({}, L);
+        newL.data = data;
+        return newL;
+      } else {
+        return L;
+      }
+    } );
   }
 
   /*****************************************************************************************************************************************
@@ -129,7 +148,8 @@ export class TodoListService {
       id: id,
       date: Date.now(),
       checked: false,
-      clock: -1
+      clock: -1,
+      data: {}
     });
   }
 
@@ -187,7 +207,8 @@ export class TodoListService {
         clock: -1,
         name: null,
         items: null,
-        id: listJSON.id
+        id: listJSON.id,
+        data: {}
       };
       if (listUI.clock < listJSON.clock) {
         Object.assign(listUI, {
@@ -195,7 +216,8 @@ export class TodoListService {
           clock: listJSON.clock,
           items: listJSON.items.map( itemId => {
             return this.itemsJSON.find( I => I.id === itemId );
-          })
+          }),
+          data: listJSON.data
         });
       }
       return listUI;

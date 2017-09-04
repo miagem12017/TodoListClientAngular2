@@ -1,5 +1,9 @@
-<section class="root">
-  <h3>{{list.name}} <button (click)="delete()">Delete list</button></h3>
+<section class="root" [style.backgroundColor]="getColor()">
+  <h3>
+    {{list.name}}
+    <button (click)="delete()">Delete list</button>
+    <input type="color" [ngModel]="getColor()" (ngModelChange)="setColor($event)" />
+  </h3>
   <form (ngSubmit)="createItem(newItemLabel.value); newItemLabel.value=''">
     <label>Create a new item:</label>
     <input type="text" #newItemLabel/>

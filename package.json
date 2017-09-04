@@ -5,6 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
+    "ssl": "ng serve --proxy-config proxySSL.conf.json --ssl 1 --ssl-key \"./server.key\" --ssl-cert \"./server.crt\"",
     "build": "ng build",
     "prod": "ng build --prod",
     "test": "ng test",
@@ -23,7 +24,6 @@
     "@angular/platform-browser-dynamic": "^4.3.6",
     "@angular/platform-server": "^4.3.6",
     "@angular/router": "^4.3.6",
-    "angular2-social-login": "^3.1.1",
     "core-js": "^2.4.1",
     "immutable": "^3.8.1",
     "rxjs": "^5.4.2",

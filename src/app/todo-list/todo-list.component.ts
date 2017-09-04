@@ -23,4 +23,16 @@ export class TodoListComponent implements OnInit {
   delete() {
     this.todoListService.SERVER_DELETE_LIST(this.list.id);
   }
+
+  getColor(): string {
+    return this.list.data["color"] ? this.list.data["color"] : "#FFFFFF";
+  }
+
+  setColor(color: string) {
+    console.log("setColor", color);
+    this.todoListService.SERVER_UPDATE_LIST_DATA(
+      this.list.id,
+      Object.assign({}, this.list.data, {color})
+    );
+  }
 }
