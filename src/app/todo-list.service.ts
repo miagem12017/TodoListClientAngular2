@@ -36,6 +36,7 @@ export class TodoListService {
   private itemsJSON: ItemJSON[] = [];
   private genId = generatorPrefix( Date.now() + "::" );
   private connected = new BehaviorSubject<boolean>(false);
+  private messagesToSendAfterReconnection: MESSAGE_FOR_SERVER[] = [];
 
   constructor(private http: Http) {
     this.sio = io({
@@ -49,19 +50,6 @@ export class TodoListService {
       console.log("Connection with socket.io server established");
       if (this.user) {
         this.connected.next(true);
-        const op: TODOLISTS_NEW_STATE = {
-          type: "TODOLISTS_NEW_STATE",
-          lists: this.ListUIs.map(
-            L => Object.assign({}, L, {items: L.items.map( I  => I.id)})
-          ),
-          items: this.ListUIs.reduce(
-            (items: ItemJSON[], list: TodoListWithItems) => {
-              items.push(...list.items);
-              return items;
-            }, [] )
-        };
-        console.log("Updating state from local", op);
-        this.emit(op);
       }
     });
     this.sio.on("disconnect", () => {
@@ -75,11 +63,32 @@ export class TodoListService {
     this.sio.on("MESSAGE_FOR_CLIENT", (msg: MESSAGE_FOR_CLIENT) => {
       switch (msg.type) {
         case "TODOLISTS_NEW_STATE":
-          return this.TODOLISTS_NEW_STATE(msg);
+          this.TODOLISTS_NEW_STATE(msg);
+          if (this.messagesToSendAfterReconnection.length > 0) {
+            this.sio.emit("operations", this.messagesToSendAfterReconnection);
+            this.messagesToSendAfterReconnection = [];
+          }
+          break;
         default:
           console.log("Unsupported message", msg);
       }
     });
+  }
+
+  sendState() {
+    const op: TODOLISTS_NEW_STATE = {
+      type: "TODOLISTS_NEW_STATE",
+      lists: this.ListUIs.map(
+        L => Object.assign({}, L, {items: L.items.map( I  => I.id)})
+      ),
+      items: this.ListUIs.reduce(
+        (items: ItemJSON[], list: TodoListWithItems) => {
+          items.push(...list.items);
+          return items;
+        }, [] )
+    };
+    console.log("Updating state from local", op);
+    this.emit(op);
   }
 
   tryReconnectSocket() {
@@ -197,7 +206,7 @@ export class TodoListService {
       const itemUI = this.itemsJSON.find( I => I.id === itemJSON.id ) || itemJSON;
       if (itemUI.clock < itemJSON.clock) {
         Object.assign(itemUI, itemJSON);
-        itemUI.label = `${itemUI.label} (update ${nbUpdate++})`;
+        // itemUI.label = `${itemUI.label} (update ${nbUpdate++})`;
       }
       return itemUI;
     });
@@ -212,7 +221,7 @@ export class TodoListService {
       };
       if (listUI.clock < listJSON.clock) {
         Object.assign(listUI, {
-          name: `${listJSON.name} (update ${nbUpdate++})`,
+          name: listJSON.name, // `${listJSON.name} (update ${nbUpdate++})`,
           clock: listJSON.clock,
           items: listJSON.items.map( itemId => {
             return this.itemsJSON.find( I => I.id === itemId );
@@ -241,6 +250,8 @@ export class TodoListService {
   emit(msg: MESSAGE_FOR_SERVER, cb?: (response: any) => any) {
     if (this.connected.getValue()) {
       return this.sio.emit("operation", msg, cb);
+    } else {
+      this.messagesToSendAfterReconnection.push( msg );
     }
   }
 
