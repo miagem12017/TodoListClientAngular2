@@ -98,18 +98,19 @@ export class TodoListService {
   /*****************************************************************************************************************************************
    * Operations on lists *******************************************************************************************************************
    ****************************************************************************************************************************************/
-  SERVER_CREATE_NEW_LIST(name: string): string {
+  SERVER_CREATE_NEW_LIST(name: string, data: Object = {}): string {
     const id = this.getLocalListId();
     this.ListUIs.push({
       name: name,
       items: [],
       id: id,
       clock: -1,
-      data: {}
+      data: data
     });
     this.emit( {
       type: "SERVER_CREATE_NEW_LIST",
       name: name,
+      data: data,
       clientListId: id
     } );
     return id;
@@ -134,7 +135,7 @@ export class TodoListService {
     this.ListUIs = this.ListUIs.map( L => {
       if (L.id === ListID) {
         const newL = Object.assign({}, L);
-        newL.data = data;
+        newL.data = Object.assign({}, newL.data, data);
         return newL;
       } else {
         return L;
@@ -145,21 +146,23 @@ export class TodoListService {
   /*****************************************************************************************************************************************
    * Operations on items *******************************************************************************************************************
    ****************************************************************************************************************************************/
-  SERVER_CREATE_ITEM(ListID: ListID, label: string, checked: boolean = false): string {
+  SERVER_CREATE_ITEM(ListID: ListID, label: string, checked: boolean = false, data: Object = {}): string {
     const id = this.genId.next().value;
     this.emit({
       type: "SERVER_CREATE_ITEM",
       ListID: ListID,
       label: label,
+      checked: checked,
+      data: data,
       clientItemId: id
     });
     this.ListUIs.find( L => L.id === ListID ).items.push({
       label: label,
       id: id,
       date: Date.now(),
-      checked: false,
+      checked: checked,
       clock: -1,
-      data: {}
+      data: data
     });
     return id;
   }
@@ -184,7 +187,10 @@ export class TodoListService {
       data: data
     };
     this.emit(op);
-    this.localUpdateItem(ListID, ItemID, {data: data});
+    const prevData = this.getItem(ListID, ItemID).data;
+    const newData  = Object.assign(prevData, data);
+    console.log("SERVER_UPDATE_ITEM_DATA", ListID, ItemID, data, "\n", "\t", prevData, "=>", newData);
+    this.localUpdateItem(ListID, ItemID, {data: newData});
   }
 
   SERVER_UPDATE_ITEM_CHECK(ListID: ListID, ItemID: ItemID, checked: boolean) {
