@@ -3,9 +3,9 @@ import {Injectable} from "@angular/core";
 import 'rxjs/add/operator/toPromise';
 import {
   ItemID, ListID,
-  MESSAGE_FOR_SERVER, SERVER_UPDATE_ITEM_CHECK, SERVER_UPDATE_ITEM_LABEL,
+  MESSAGE_FOR_SERVER, SERVER_UPDATE_ITEM_CHECK, SERVER_UPDATE_ITEM_LABEL, SERVER_UPDATE_ITEM_DATA,
   MESSAGE_FOR_CLIENT, TODOLISTS_NEW_STATE,
-  TodoListJSON, ItemJSON, TodoListWithItems, SERVER_DELETE_ITEM, SERVER_DELETE_LIST, SERVER_UPDATE_LIST_DATA,
+  TodoListJSON, ItemJSON, TodoListWithItems, SERVER_DELETE_ITEM, SERVER_DELETE_LIST, SERVER_UPDATE_LIST_DATA
 } from "../data/protocol";
 export {
   ItemID, ListID,
@@ -16,11 +16,11 @@ export {
 import {Http, Response} from "@angular/http";
 import * as io from "socket.io-client";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {PartialObserver} from "rxjs/Observer";
-import {Subscription} from "rxjs/Subscription";
+// import {PartialObserver} from "rxjs/Observer";
+// import {Subscription} from "rxjs/Subscription";
 import {Observable} from "rxjs/Observable";
 
-let nbUpdate = 0;
+// let nbUpdate = 0;
 function* generatorPrefix(prefix: string) {
   let i = 0;
   while (true) {
@@ -98,7 +98,7 @@ export class TodoListService {
   /*****************************************************************************************************************************************
    * Operations on lists *******************************************************************************************************************
    ****************************************************************************************************************************************/
-  SERVER_CREATE_NEW_LIST(name: string) {
+  SERVER_CREATE_NEW_LIST(name: string): string {
     const id = this.getLocalListId();
     this.ListUIs.push({
       name: name,
@@ -112,6 +112,7 @@ export class TodoListService {
       name: name,
       clientListId: id
     } );
+    return id;
   }
 
   SERVER_DELETE_LIST(ListID: ListID) {
@@ -144,7 +145,7 @@ export class TodoListService {
   /*****************************************************************************************************************************************
    * Operations on items *******************************************************************************************************************
    ****************************************************************************************************************************************/
-  SERVER_CREATE_ITEM(ListID: ListID, label: string, checked: boolean = false) {
+  SERVER_CREATE_ITEM(ListID: ListID, label: string, checked: boolean = false): string {
     const id = this.genId.next().value;
     this.emit({
       type: "SERVER_CREATE_ITEM",
@@ -160,6 +161,7 @@ export class TodoListService {
       clock: -1,
       data: {}
     });
+    return id;
   }
 
   SERVER_DELETE_ITEM(ListID: ListID, ItemID: ItemID) {
@@ -172,6 +174,17 @@ export class TodoListService {
     const list = this.getList(ListID);
     list.items = list.items.filter( I => I.id !== ItemID );
     this.itemsJSON = this.itemsJSON.filter( I => I.id !== ItemID );
+  }
+
+  SERVER_UPDATE_ITEM_DATA(ListID: ListID, ItemID: ItemID, data: Object) {
+    const op: SERVER_UPDATE_ITEM_DATA = {
+      type: "SERVER_UPDATE_ITEM_DATA",
+      ListID: ListID,
+      ItemID: ItemID,
+      data: data
+    };
+    this.emit(op);
+    this.localUpdateItem(ListID, ItemID, {data: data});
   }
 
   SERVER_UPDATE_ITEM_CHECK(ListID: ListID, ItemID: ItemID, checked: boolean) {
@@ -267,7 +280,7 @@ export class TodoListService {
     return this.getList(ListID).items.find( I => I.id === ItemID );
   }
 
-  private localUpdateItem(ListID: ListID, ItemID: ItemID, update: {label?: string, checked?: boolean}) {
+  private localUpdateItem(ListID: ListID, ItemID: ItemID, update: {label?: string, checked?: boolean, data?: Object}) {
     const list = this.getList(ListID);
     list.items = list.items.map( I => I.id !== ItemID ? I : Object.assign(I, update) );
   }

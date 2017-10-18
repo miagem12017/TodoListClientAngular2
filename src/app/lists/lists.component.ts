@@ -20,6 +20,7 @@ export class ListsComponent implements OnInit {
   }
 
   createList(name: string) {
-    this.todoListService.SERVER_CREATE_NEW_LIST(name);
+    const localListID = this.todoListService.SERVER_CREATE_NEW_LIST(name);
+    this.todoListService.SERVER_UPDATE_LIST_DATA(localListID, {color: "#00FFFF"});
   }
 }

@@ -17,7 +17,8 @@ export class TodoListComponent implements OnInit {
   }
 
   createItem(label: string) {
-    this.todoListService.SERVER_CREATE_ITEM(this.list.id, label, false);
+    const id = this.todoListService.SERVER_CREATE_ITEM(this.list.id, label, false);
+    this.todoListService.SERVER_UPDATE_ITEM_DATA(this.list.id, id, {bob: 1, toto: 2});
   }
 
   delete() {
