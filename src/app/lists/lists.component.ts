@@ -20,7 +20,10 @@ export class ListsComponent implements OnInit {
   }
 
   createList(name: string) {
-    const localListID = this.todoListService.SERVER_CREATE_NEW_LIST(name, {color: "#FF0000"});
-    this.todoListService.SERVER_UPDATE_LIST_DATA(localListID, {color: "#00FFFF"});
+    const localListID = this.todoListService.SERVER_CREATE_NEW_LIST(name, {
+      color: "#FF0000",
+      someOtherAttribute: "pourquoi pas un texte ?"
+      // Add other data here...
+    });
   }
 }
