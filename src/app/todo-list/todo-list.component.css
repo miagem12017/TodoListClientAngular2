@@ -13,3 +13,124 @@
 h3 {
   margin-top: 0;
 }
+
+/***********************************/
+
+.root{
+  width: 100%;
+  background-color: silver;
+}
+.bd{
+  width: 950px;
+  margin-left: 200px;
+  background-color: aqua;
+}
+
+.titre {
+  background-color: lightgray;
+  /*border: 2px solid black;*/
+  border-radius: 6px 6px 0px 0px;
+  height: 100px;
+  text-align: center;
+
+}
+.btCustum{
+  font-size: small;
+}
+.sec{
+  border: 1px solid;
+  line-height: 40px;
+  background-color: white;
+  margin-top: 2%;
+  margin-bottom: 2%;
+
+}
+.w3-modal-content{
+  height: 400px;
+  padding-top: 0px;
+  border-radius: 8px;
+  width: 800px;
+  background-color: lightgray;
+}
+.divBandeau{
+  background-color: silver;
+  height: 65px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  font-size: x-large;
+  margin-bottom: 65px;
+  padding-top: 8px;
+
+}
+.modal-container{
+  text-align: right;
+  padding-right: 17%;
+  background-color: white;
+  width: 600px;
+  margin-left: 100px;
+  height: 200px;
+  padding-top: 45px;
+}
+
+.inputModal {
+  border-radius: 4px;
+}
+
+.cl{
+  display: inline-block;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+
+.w3-container{
+  border-color: red;
+}
+.entete{
+  background-color: silver;
+  border-radius: 5px 5px 0px 0px;
+  height: 100px;
+  padding-top: 30px;
+}
+.sec{
+  margin-bottom: 30px;
+
+  border: 1px solid;
+  line-height: 40px;
+  padding: 10px;
+  width: 600px;
+  background-color: white;
+  margin-top: 100px;
+  margin-left: 150px;
+}
+
+h1{
+  text-align: center;
+}
+.ent{
+  background-color: silver;
+  border-radius: 5px 5px 0px 0px;
+  height: 100px;
+  padding-top: 30px;
+  width: 915px;
+  margin-left: 17px;
+}
+
+section{
+  background-color: lightgray;
+  height: auto;
+  width: 915px;
+  margin-left: 17px;
+}
+footer{
+  background-color: silver;
+  /*border: 2px solid black;*/
+  border-radius: 0px 0px 6px 6px;
+  height: 50px;
+  text-align: center;
+  margin-top: 300px;
+  width: 915px;
+  padding: 10px;
+}
+.btr{
+
+}

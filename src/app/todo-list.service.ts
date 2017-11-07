@@ -19,6 +19,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 // import {PartialObserver} from "rxjs/Observer";
 // import {Subscription} from "rxjs/Subscription";
 import {Observable} from "rxjs/Observable";
+import {dataForItem} from "../../../app/data/protocol";
 
 // let nbUpdate = 0;
 function* generatorPrefix(prefix: string) {
@@ -179,7 +180,7 @@ export class TodoListService {
     this.itemsJSON = this.itemsJSON.filter( I => I.id !== ItemID );
   }
 
-  SERVER_UPDATE_ITEM_DATA(ListID: ListID, ItemID: ItemID, data: Object) {
+  SERVER_UPDATE_ITEM_DATA(ListID: ListID, ItemID: ItemID, data: dataForItem) {
     const op: SERVER_UPDATE_ITEM_DATA = {
       type: "SERVER_UPDATE_ITEM_DATA",
       ListID: ListID,

@@ -1,15 +1,20 @@
-<p>There are {{getLists().length}} lists</p>
-<section>
-  <form (ngSubmit)="createList(newListName.value); newListName.value=''">
-    <label>Create a new list:</label>
-    <input type="text" #newListName/>
-  </form>
-</section>
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
 
-<!--
-<p>getItemsUI: {{getItemsUI() | json}}</p>
-<p>getLists: {{getLists() | json}}</p>
--->
-<section class="lists">
-  <app-todo-list *ngFor="let list of getLists()" [list]="list" [clock]="list.clock"></app-todo-list>
-</section>
+
+
+<div id="divCreate">
+
+
+</div>
+<div id="navRight" style="border-color: brown;">
+  <section class="lists" >
+    <app-todo-list *ngFor="let list of getLists()" [list]="list" [clock]="list.clock" style="border:none;"></app-todo-list>
+  </section>
+</div>
+
+</html>
+

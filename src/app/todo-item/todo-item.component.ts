@@ -20,15 +20,18 @@ export class TodoItemComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
   }
 
-  setLabel(label: string) {
-    if (label === "") {
-      this.delete();
-    } else {
-      this.todoListService.SERVER_UPDATE_ITEM_LABEL(this.listId, this.item.id, label);
-    }
-    this.editLabel(false);
+  showEditModal() {
+    document.getElementById('editItem' + this.item.id).style.display = 'block';
   }
-
+  hideEditModal() {
+    document.getElementById('editItem' + this.item.id).style.display = 'none';
+  }
+  showDeleteModal() {
+    document.getElementById('deleteItem' + this.item.id).style.display = 'block';
+  }
+  hideDeleteModal() {
+    document.getElementById('deleteItem' + this.item.id).style.display = 'none';
+  }
   isEditingLabel(): boolean {
     return this.editingLabel;
   }
@@ -43,5 +46,15 @@ export class TodoItemComponent implements OnInit, OnChanges {
 
   delete() {
     this.todoListService.SERVER_DELETE_ITEM(this.listId, this.item.id);
+  }
+
+  setItem(label: string, newDate: Date) {
+    if (label === "" && newDate === null) {
+      this.delete();
+    } else {
+      this.todoListService.SERVER_UPDATE_ITEM_LABEL(this.listId, this.item.id, label);
+      this.todoListService.SERVER_UPDATE_ITEM_DATA(this.listId, this.item.id, {itemDate: newDate});
+    }
+    this.editLabel(false);
   }
 }

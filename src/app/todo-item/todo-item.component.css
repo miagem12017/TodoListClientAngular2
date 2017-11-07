@@ -5,3 +5,106 @@ section.toBeUpdated {
 form {
   display: inline;
 }
+
+
+.sec{
+  margin-bottom: 30px;
+
+  border: 1px solid;
+  line-height: 40px;
+  padding: 10px;
+  width: 600px;
+  background-color: white;
+  margin-top: 100px;
+  margin-left: 110px;
+}
+
+.marb{
+  margin-left: 400px;
+}
+
+.labm{
+  padding: 20px;
+}
+
+
+.w3-modal-content{
+  height: 400px;
+  padding-top: 0px;
+  border-radius: 8px;
+  width: 800px;
+  background-color: lightgray;
+}
+.divBandeau{
+  background-color: silver;
+  height: 65px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  font-size: x-large;
+  margin-bottom: 65px;
+  padding-top: 8px;
+
+}
+.modal-container{
+  text-align: right;
+  padding-right: 17%;
+  background-color: white;
+  width: 600px;
+  margin-left: 100px;
+  height: 200px;
+  padding-top: 45px;
+}
+
+.inputModal {
+  border-radius: 4px;
+}
+
+.cl{
+  display: inline-block;
+  border-radius: 6px;
+}
+
+.w3-container{
+  border-color: red;
+}
+.entete{
+  background-color: silver;
+  border-radius: 5px 5px 0px 0px;
+  height: 100px;
+  padding-top: 30px;
+}
+
+h1{
+  text-align: center;
+}
+
+section{
+  background-color: lightgray;
+  height: 500px;
+  width: 915px;
+  margin-left: 17px;
+}
+
+.itm{
+  margin: 5px;
+  padding: 5px;
+  width: auto;
+
+}
+
+.ed{
+  display: inline-block;
+  margin-left: 350px;
+}
+.dl{
+  display: inline-block;
+  margin-left: 400px;
+  margin-top: -60px;
+}
+
+.btnn{
+  display: inline-block;
+  margin-top: -50px;
+}
+
+

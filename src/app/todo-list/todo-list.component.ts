@@ -16,14 +16,13 @@ export class TodoListComponent implements OnInit {
   ngOnInit() {
   }
 
-  createItem(label: string) {
-    const id = this.todoListService.SERVER_CREATE_ITEM(this.list.id, label, false, {
-      someData: "someValue",
-      someNumber: 42,
-      someArray: ["riri", "fifi", "loulou"],
-      itemColor: "#FFFFFF"
-      // Add other data here...
-    });
+  createItem(label: string, newDate: string) {
+    if (label !== '' && newDate !== "") {
+      const id = this.todoListService.SERVER_CREATE_ITEM(this.list.id, label, false, {
+        itemDate: newDate
+      });
+    }
+
   }
 
   delete() {

@@ -1,10 +1,60 @@
-<section>
-  <input #isChecked type="checkbox" [ngModel]="item.checked" (ngModelChange)="check(isChecked.checked)" />
-  <label *ngIf="!isEditingLabel()" (dblclick)="editLabel(true)">
-    {{item.label}} (data: {{item.data | json}})
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body class="bd">
+<div class="itm">
+
+  <input #isChecked type="checkbox" id='ck'[ngModel]="item.checked" (ngModelChange)="check(isChecked.checked)" />
+  <label class="lbb">
+    {{item.label}} le <strong><i>{{item.data['itemDate']| date: 'dd/MM/yyyy'}}</i></strong>
   </label>
-  <form *ngIf="isEditingLabel()" (submit)="setLabel(newLabel.value)">
-    <input #newLabel type="text" [value]="item.label"/>
-  </form>
-  <button (click)="delete()">Delete</button>
-</section>
+
+<span class="btnn">
+      <span (click)="showEditModal()"><button (click)="editLabel(true)" class="btn btn-primary glyphicon glyphicon-edit ed "></button></span>
+      <button (click)="showDeleteModal()" class="btn btn-primary glyphicon glyphicon-trash dl"></button>
+</span>
+
+  <div [attr.id]="'deleteItem' + item.id" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="divBandeau">
+        <h1>Supprimer un item</h1>
+        <span (click)="hideDeleteModal()" class="w3-button w3-display-topright">&times;</span>
+      </div>
+
+        <h1 class="col-lg-12">Êtes-vous sûr de vouloir supprimer l'item?</h1><br><br><br><br>
+            <div class="col-sm-offset-4 col-sm-6">
+              <button type="reset" class="cl" (click)="hideDeleteModal()">Annuler</button>
+              <span (click)="hideDeleteModal()"> <button (click)="delete()" class="cl btr">Supprimer</button></span>
+            </div>
+    </div>
+  </div>
+
+
+</div>
+<div [attr.id]="'editItem' + item.id" class="w3-modal">
+  <div class="w3-modal-content">
+    <div class="divBandeau">
+     <h1>Modifier un item</h1>
+      <span (click)="hideEditModal()" class="w3-button w3-display-topright">&times;</span>
+    </div>
+    <div class="modal-container">
+        <label style="display: inline-block; float: left;width: 200px;">Titre : </label>
+        <input #newLabel type="text" [ngModel]="item.label" required="required" class="inputModal" style="display: inline-block; float: right;width: 200px;"/><br><br>
+        <label style="display: inline-block; float: left;width: 200px;">Deadline : </label>
+        <input #newDate required="required" type="Date" [ngModel]="item.data['itemDate']" class="inputModal" style="display: inline-block; float: right;width: 205px;"/><br><br>
+        <div class="form-group">
+          <div class="col-sm-offset-6 col-sm-6">
+            <span (click)="hideEditModal()">
+              <button type="reset" class="cl">Annuler</button>
+            </span>
+            <span (click)="hideEditModal()">
+              <button *ngIf="isEditingLabel()" (click)="setItem(newLabel.value, newDate.value)" class="cl btr">Modifier</button>
+            </span>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+</body>

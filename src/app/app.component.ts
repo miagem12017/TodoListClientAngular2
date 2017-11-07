@@ -49,5 +49,12 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.router.navigate(["lists"]);
+    this.tdlService.SERVER_CREATE_NEW_LIST('TodoList', {
+      color: "#FF0000",
+      someOtherAttribute: " "
+      // Add other data here...
+    })
   }
+
+
 }
